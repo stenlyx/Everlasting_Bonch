@@ -29,7 +29,7 @@ SDL_Texture* Text::loadFont(SDL_Renderer *renderer,const std::string& font_path,
     {
         std::cerr << "Failed to load font." << std::endl;
     }
-    auto text_surface = TTF_RenderText_Solid(font, message_text.c_str(), color);
+    auto text_surface = TTF_RenderUTF8_Solid(font, message_text.c_str(), color);
     if (!text_surface)
     {
         std::cerr << "Failed to create text surface." << std::endl;
@@ -40,5 +40,6 @@ SDL_Texture* Text::loadFont(SDL_Renderer *renderer,const std::string& font_path,
         std::cerr << "Failed to create text texture." << std::endl;
     }
     SDL_FreeSurface(text_surface);
+    TTF_CloseFont(font);
     return text_texture;
 }

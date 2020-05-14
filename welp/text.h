@@ -3,6 +3,7 @@
 #include <SDL_ttf.h>
 #include <SDL.h>
 #include <string>
+#include <unordered_map>
 
 class Text
 {
@@ -16,5 +17,7 @@ public:
 private:
 	SDL_Texture* _text_texture = nullptr;
 	mutable SDL_Rect _text_rect;
+
+
 
 };

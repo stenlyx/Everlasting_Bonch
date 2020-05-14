@@ -1,29 +1,62 @@
 #include "window.h"
 #include "text.h"
-#include "json.h"
+//#include "json.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
 #include<sstream> 
 #include<string>
+#include "rapidjson/filereadstream.h"
+#include "rapidjson/document.h"
+#include "rapidjson/filewritestream.h"
+#include <rapidjson/writer.h>
+#include "rapidjson/stringbuffer.h"
+#include <cstdio>
+#include <windows.h>
+#include <unordered_map>
 
-using json = nlohmann::json;
 
-std::ifstream ifs("strings/ru-ru.json");
-json jf = json::parse(ifs);
-int p = 1;
+#define MAX_INPUT_LENGTH 255
 
-
+//using json = nlohmann::json;
+using namespace rapidjson;
 
 SDL_Event event;
 
 int main(int argc, char** argv)
 {
-	Window window("Endless Bonch", 1280, 720);
+//	std::ifstream ifs("strings/ru-ru.json");
+//	json jf = json::parse(ifs);
+	int p = 1;
 
+	std::unordered_map<std::string, std::string> mText;
+
+	auto fileName = "strings/ru-ru.gptext";
+
+	std::ifstream file(fileName);
+	// Read the entire file to a string stream
+	std::stringstream fileStream;
+	fileStream << file.rdbuf();
+	std::string contents = fileStream.str();
+	// Open this file in rapidJSON
+	rapidjson::StringStream jsonStr(contents.c_str());
+	rapidjson::Document doc;
+	doc.ParseStream(jsonStr);
+
+	const rapidjson::Value& actions = doc;
+	for (rapidjson::Value::ConstMemberIterator itr = actions.MemberBegin();
+		itr != actions.MemberEnd(); ++itr)
+	{
+		if (itr->name.IsString() && itr->value.IsString())
+		{
+			mText.emplace(itr->name.GetString(),
+				itr->value.GetString());
+		}
+	}
+
+	Window window("Endless Bonch", 1280, 720);
 	while (!window.isClosed())
 	{
-		//window.pollEvents();
 		if (SDL_PollEvent(&event))
 		{
 			switch (event.type)
@@ -32,12 +65,11 @@ int main(int argc, char** argv)
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_SPACE:
-					if (p != 11)
+					if (p != 5)
 					{
 						SDL_RenderClear(Window::renderer);
 						std::string str = std::to_string(p);
-						std::string i = jf[str];
-						Text text(Window::renderer, "assets/arial.ttf", 25, i, { 255, 255, 255, 255 });
+						Text text(Window::renderer, u8"assets/times.ttf", 30, mText[str], { 255, 255, 255, 255 });
 						text.display(0, 300, Window::renderer);
 						p++;
 						std::cout << p << std::endl;
@@ -48,7 +80,7 @@ int main(int argc, char** argv)
 				}
 			case SDL_MOUSEBUTTONDOWN:
 				if (p != 11)
-				{
+				{/*
 					SDL_RenderClear(Window::renderer);
 					std::string str = std::to_string(p);
 					std::string i = jf[str];
@@ -57,6 +89,7 @@ int main(int argc, char** argv)
 					p++;
 					std::cout << p << std::endl;
 					break;
+					*/
 				}
 				else
 					break;
@@ -64,8 +97,8 @@ int main(int argc, char** argv)
 				break;
 			}
 		}
+		window.pollEvents();
 		window.clear();
 	}
-
 	return 0;
 }

@@ -3,35 +3,7 @@
 #include <SDL_ttf.h>
 #include "json.h"
 #include <iostream>
-#include <fstream>
 #include "text.h"
-/*
-using json = nlohmann::json;
-
-std::ifstream ifs("strings/ru-ru.json");
-json jf = json::parse(ifs);
-
-int p = 1;
-
-std::string str = std::to_string(p);
-
-std::string i = jf[str];
-
-text.display(300, 300, Window::renderer);
-
-
-using json = nlohmann::json;
-
-std::ifstream ifs("strings/ru-ru.json");
-json jf = json::parse(ifs);
-
-
-int p = 1;
-std::string str = std::to_string(p);
-std::string i = jf[str];
-*/
-
-
 
 SDL_Renderer* Window::renderer = nullptr;
 
@@ -94,7 +66,7 @@ bool Window::init()
 
 	return true;
 }
-/*
+
 void Window::pollEvents()
 {
 	SDL_Event event;
@@ -120,10 +92,9 @@ void Window::pollEvents()
 		}
 	}
 }
-*/
+
 void Window::clear() const
 {
 	SDL_RenderPresent(renderer);
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
-	//SDL_RenderClear(renderer);
 }
