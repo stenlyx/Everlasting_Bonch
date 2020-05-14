@@ -1,6 +1,5 @@
 #include "window.h"
 #include "text.h"
-//#include "json.h"
 #include <iostream>
 #include <iomanip>
 #include <fstream>
@@ -15,18 +14,12 @@
 #include <windows.h>
 #include <unordered_map>
 
-
-#define MAX_INPUT_LENGTH 255
-
-//using json = nlohmann::json;
 using namespace rapidjson;
 
 SDL_Event event;
 
 int main(int argc, char** argv)
 {
-//	std::ifstream ifs("strings/ru-ru.json");
-//	json jf = json::parse(ifs);
 	int p = 1;
 
 	std::unordered_map<std::string, std::string> mText;
@@ -80,16 +73,14 @@ int main(int argc, char** argv)
 				}
 			case SDL_MOUSEBUTTONDOWN:
 				if (p != 11)
-				{/*
+				{
 					SDL_RenderClear(Window::renderer);
 					std::string str = std::to_string(p);
-					std::string i = jf[str];
-					Text text(Window::renderer, "assets/arial.ttf", 25, i, { 255, 255, 255, 255 });
+					Text text(Window::renderer, u8"assets/times.ttf", 30, mText[str], { 255, 255, 255, 255 });
 					text.display(0, 300, Window::renderer);
 					p++;
 					std::cout << p << std::endl;
 					break;
-					*/
 				}
 				else
 					break;
