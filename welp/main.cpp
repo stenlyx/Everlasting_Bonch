@@ -1,16 +1,10 @@
 #include "window.h"
 #include "text.h"
 #include <iostream>
-#include <iomanip>
 #include <fstream>
 #include<sstream> 
 #include<string>
-#include "rapidjson/filereadstream.h"
 #include "rapidjson/document.h"
-#include "rapidjson/filewritestream.h"
-#include <rapidjson/writer.h>
-#include "rapidjson/stringbuffer.h"
-#include <cstdio>
 #include <windows.h>
 #include <unordered_map>
 
@@ -24,7 +18,7 @@ int main(int argc, char** argv)
 
 	std::unordered_map<std::string, std::string> mText;
 
-	auto fileName = "strings/ru-ru.gptext";
+	auto fileName = "strings/text1.gptext";
 
 	std::ifstream file(fileName);
 	// Read the entire file to a string stream
@@ -58,12 +52,12 @@ int main(int argc, char** argv)
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_SPACE:
-					if (p != 5)
+					if (p != 7)
 					{
 						SDL_RenderClear(Window::renderer);
 						std::string str = std::to_string(p);
 						Text text(Window::renderer, u8"assets/times.ttf", 30, mText[str], { 255, 255, 255, 255 });
-						text.display(0, 300, Window::renderer);
+						text.display(40, 450, Window::renderer);
 						p++;
 						std::cout << p << std::endl;
 						break;
@@ -72,12 +66,12 @@ int main(int argc, char** argv)
 						break;
 				}
 			case SDL_MOUSEBUTTONDOWN:
-				if (p != 11)
+				if (p != 7)
 				{
 					SDL_RenderClear(Window::renderer);
 					std::string str = std::to_string(p);
 					Text text(Window::renderer, u8"assets/times.ttf", 30, mText[str], { 255, 255, 255, 255 });
-					text.display(0, 300, Window::renderer);
+					text.display(40, 450, Window::renderer);
 					p++;
 					std::cout << p << std::endl;
 					break;
