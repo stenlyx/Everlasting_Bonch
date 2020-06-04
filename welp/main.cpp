@@ -100,9 +100,6 @@ void display_buttons(int amount, std::string b1, std::string b2, std::string b3 
 int main(int argc, char** argv)
 {
 	std::ofstream myfile;
-	myfile.open("example.txt");
-	myfile << "Writing this to a file.\n";
-	myfile.close();
 
 	SDL_Init(SDL_INIT_AUDIO);
 
@@ -144,6 +141,10 @@ int main(int argc, char** argv)
 				switch (event.key.keysym.sym)
 				{
 				case SDLK_SPACE:
+					
+					myfile.open("example.txt");
+					myfile << a;
+					myfile.close();
 					if (a < 7)
 					{
 						display_text(a);
