@@ -391,7 +391,12 @@ int main(int argc, char** argv)
 
 	}
 	Mix_FreeMusic(background);
+	Mix_FreeMusic(runmin);
+	Mix_FreeMusic(run1);
+	Mix_FreeMusic(deadmin);
+	Mix_FreeMusic(fool);
 	Mix_FreeChunk(ded);
+	Mix_FreeChunk(dead);
 	Mix_CloseAudio();
 	return 0;
 }
