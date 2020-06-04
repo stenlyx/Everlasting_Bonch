@@ -80,17 +80,17 @@ void display_buttons(int amount, std::string b1, std::string b2, std::string b3 
 	if (amount == 2)
 	{
 		SDL_RenderClear(Window::renderer);
-		Text text1(Window::renderer, u8"assets/times.ttf", 30, b1, { 255, 0, 0, 0 });
-		Text text2(Window::renderer, u8"assets/times.ttf", 30, b2, { 0, 255, 0, 0 });
+		Text text1(Window::renderer, u8"assets/times.ttf", 25, b1, { 226, 106, 106, 0 });
+		Text text2(Window::renderer, u8"assets/times.ttf", 25, b2, { 255, 255, 126, 0 });
 		text1.display(40, 450, Window::renderer);
 		text2.display(40, 480, Window::renderer);
 	}
 	if (amount == 3)
 	{
 		SDL_RenderClear(Window::renderer);
-		Text text1(Window::renderer, u8"assets/times.ttf", 30, b1, { 255, 0, 0, 0 });
-		Text text2(Window::renderer, u8"assets/times.ttf", 30, b2, { 0, 255, 0, 0 });
-		Text text3(Window::renderer, u8"assets/times.ttf", 30, b3, { 0, 0, 255, 0 });
+		Text text1(Window::renderer, u8"assets/times.ttf", 25, b1, { 226, 106, 106, 0 });
+		Text text2(Window::renderer, u8"assets/times.ttf", 25, b2, { 123, 239, 178, 0 });
+		Text text3(Window::renderer, u8"assets/times.ttf", 25, b3, { 255, 255, 126, 0 });
 		text1.display(40, 450, Window::renderer);
 		text2.display(40, 480, Window::renderer);
 		text3.display(40, 510, Window::renderer);
@@ -108,40 +108,30 @@ int main(int argc, char** argv)
 
 	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
 
-	Mix_Music* background = Mix_LoadMUS("assets/hornet_theme.mp3");
+	Mix_Music* background = Mix_LoadMUS("assets/2thieves.mp3");
+	Mix_Music* runmin = Mix_LoadMUS("assets/runmin.mp3");
+	Mix_Music* run1 = Mix_LoadMUS("assets/run.mp3");
+	Mix_Music* deadmin = Mix_LoadMUS("assets/deadmin.mp3");
+	Mix_Music* fool = Mix_LoadMUS("assets/fool.mp3");
+	Mix_Chunk* ded = Mix_LoadWAV("assets/ded.wav");
+	Mix_Chunk* dead = Mix_LoadWAV("assets/dead.wav");
 
 	int a = 1;
 	bool leftClick = false;
 	bool goNext = false;
 	bool run = false;
 	bool grave = false;
+	bool dawg = false;
+	bool sigma = false;
+	bool sigma2 = false;
+	bool sigma3 = false;
+	bool longr = false;
+	bool play_run = false;
+	bool play_run1 = true;
 
 	Window window("Endless Bonch", 1280, 720);
 	rjson("strings/intro.gptext");
-/*
-	mText.clear();
-	std::ifstream file(fileName);
-	// Read the entire file to a string stream
-	std::stringstream fileStream;
-	fileStream << file.rdbuf();
-	std::string contents = fileStream.str();
-	// Open this file in rapidJSON
-	rapidjson::StringStream jsonStr(contents.c_str());
-	rapidjson::Document doc;
-	doc.ParseStream(jsonStr);
-
-	const rapidjson::Value& actions = doc;
-	for (rapidjson::Value::ConstMemberIterator itr = actions.MemberBegin();
-		itr != actions.MemberEnd(); ++itr)
-	{
-		if (itr->name.IsString() && itr->value.IsString())
-		{
-			mText.emplace(itr->name.GetString(),
-				itr->value.GetString());
-		}
-	}
-*/
-	Mix_PlayMusic(background, -1);
+	Mix_PlayMusic(background, 0);
 	while (!window.isClosed())
 	{
 		if (SDL_PollEvent(&event))
@@ -176,6 +166,10 @@ int main(int argc, char** argv)
 							u8"3.Отдадим чертову монету покойнику!");
 
 					}
+
+					if (a == 16)
+						Mix_PlayChannel(-1, ded, 0);
+
 					if (a < 20 && goNext)
 					{
 						display_text(a);
@@ -187,6 +181,12 @@ int main(int argc, char** argv)
 					{
 						goNext = false;
 						display_buttons(2, u8"1.Бежать куда глаза глядят", u8"2.Спрятаться на кладбище");
+					}
+					if (play_run)
+					{
+						Mix_PlayMusic(runmin, 0);
+						play_run = false;
+						break;
 					}
 					if (a < 32 && goNext && run)
 					{
@@ -201,23 +201,178 @@ int main(int argc, char** argv)
 							display_buttons(2, u8"1.Продолжить разбегаться", u8"2.Может быть продолжить разбегаться?");
 							break;
 						}
+						if (a == 31 && play_run1)
+						{
+							Mix_PlayMusic(run1, 0);
+							play_run1 = false;
+							display_text(a);
+							a++;
+							break;
+						}
+						display_text(a);
+						a++;
+						std::cout << a << std::endl;
+						break;
+
+					}
+
+					if (a < 26 && goNext && grave)
+					{
+						if (a == 24)
+						{
+							display_buttons(2, u8"1.Да", u8"2.Попытаться закрыть уши");
+							break;
+						}
 						display_text(a);
 						a++;
 						std::cout << a << std::endl;
 						break;
 					}
+					if (a == 26&&grave)
+					{
+						display_buttons(3, u8"1.Вы решаете, что хуже уже не будет, и идете на звуки музыки", 
+							u8"2.Даже самая виртуозная игра на скрипке не дает вам забыть,что вы все еще на кладбище с мертвецами.", 
+							u8"   Разворачиваетесь и бежите прочь от музыки.");
+						break;
+					}
+					if (a < 65&&sigma)
+					{
+						if (a == 39)
+						{
+							display_buttons(2, u8"1.Остаться", u8"2.Попытаться уйти");
+							break;
+						}
+						if (a == 48)
+						{
+							display_buttons(2, u8"1.Отправиться короткой горной дорогой", u8"2.Пойти длинной, но безопасной дорогой");
+							break;
+						}
+						display_text(a);
+						a++;
+						std::cout << a << std::endl;
+						break;
+					}
+
+					if (a < 72 && longr)
+					{
+						if (a == 69)
+						{
+							display_buttons(2, u8"1.Отвлечь толпу шутками", u8"2.Начать передразнивать аббата");
+							break;
+						}
+						display_text(a);
+						a++;
+						std::cout << a << std::endl;
+						break;
+					}
+					
+					if (a < 68 && sigma2)
+					{
+						if (a == 33)
+						{
+							display_buttons(2, u8"1.Попытаться попросить помощи", u8"2.Промолчать");
+							break;
+						}
+						if (a == 35)
+							Mix_PlayChannel(-1, dead, 0);
+
+						if (a == 36)
+							Mix_PlayMusic(deadmin, 0);
+
+						if (a == 42)
+						{
+							display_buttons(2, u8"1.Толкаться", u8"2.Бежать");
+							break;
+						}
+						if (a == 46)
+						{
+							display_buttons(2, u8"1.Пинаться", u8"2.Пытаться бежать");
+							break;
+						}
+						if (a == 55)
+						{
+							display_buttons(2, u8"1.Убежать влево", u8"2.Убежать вправо");
+							break;
+						}
+						if (a == 56)
+							Mix_PlayMusic(fool, 0);
+
+						display_text(a);
+						a++;
+						std::cout << a << std::endl;
+						break;
+					}
+					
+					if (a < 78 && sigma3)
+					{
+						if (a == 44)
+						{
+							display_buttons(2, u8"1.Попытаться попросить помощи", u8"2.Промолчать");
+							break;
+						}
+						if (a == 53)
+						{
+							display_buttons(2, u8"1.Толкаться", u8"2.Бежать");
+							break;
+						}
+						if (a == 57)
+						{
+							display_buttons(2, u8"1.Пинаться", u8"2.Пытаться бежать");
+							break;
+						}
+						if (a == 66)
+						{
+							display_buttons(2, u8"1.Убежать влево", u8"2.Убежать вправо");
+							break;
+						}
+						display_text(a);
+						a++;
+						std::cout << a << std::endl;
+						break;
+					}
+
 					else
 						break;
 				case SDLK_1:
 					if (a == 13) { rjson("strings/beginning2.gptext"), display_text(a), a++, goNext = true; }
-					if (a == 20) { rjson("strings/run.gptext"), display_text(a), a++, goNext = true, run = true; }
-					if (a == 23) { display_text(a), a++; }
-					if (a == 28) { display_text(a), a++; }
+					if (a == 20) { rjson("strings/run.gptext"), display_text(a), a++, goNext = true, run = true, play_run = true; }
+					if (a == 23&&run) { display_text(a), a++; }
+					if (a == 24 && grave) { display_text(a), a++; }
+					if (a == 26 && grave) { rjson("strings/sigma.gptext"), display_text(a), a++, sigma = true; }
+					if (a == 39&&sigma)  { display_text(a), a++; } 
+					if (a == 48 && sigma) { display_text(a), a++; }
+					if (a == 69&&longr) { display_text(a), a++; }
+					if (a == 28&&run) { display_text(a), a++; }
+					if (a == 33&&sigma2) { display_text(a), a++; }
+					if (a == 42&&sigma2) { display_text(a), a++; }
+					if (a == 46 && sigma2) { display_text(a), a++; }
+					if (a == 55 && sigma2) { display_text(a), a++; }
+					if (a == 44&&sigma3) { display_text(a), a++; }
+					if (a == 53 && sigma3) { display_text(a), a++; }
+					if (a == 57 && sigma3) { display_text(a), a++; }
+					if (a == 66 && sigma3) { display_text(a), a++; }
 					break;
 				case SDLK_2:
 					if (a == 13) { rjson("strings/beginning2.gptext"), display_text(a), a++, goNext = true; }
-					if (a == 20) { rjson("strings/grave.gptext"),  display_text(a), a++, goNext = true; }
-					if (a == 23) { display_text(a), a++; }
+					if (a == 20) { rjson("strings/grave.gptext"),  display_text(a), a++, goNext = true, grave = true; }
+					if (a == 24 && grave) {
+						SDL_RenderClear(Window::renderer);
+						Text ss(Window::renderer, u8"assets/times.ttf", 30, u8"Вы не можете противиться искусству", { 255, 255, 255, 255 });
+						ss.display(40, 450, Window::renderer);
+					}
+					if (a == 26 && grave) { rjson("strings/sigma2.gptext"), display_text(a), a++, sigma2 = true; }
+					if (a == 39 && sigma) { rjson("strings/sigma3.gptext"), display_text(a), a++, sigma2 = true, sigma = false; }
+					if (a == 48 && sigma) { rjson("strings/longr.gptext"), display_text(a), a++, longr = true; }
+					if (a == 69 && longr) { display_text(a), a++; }
+					if (a == 23&&run) { display_text(a), a++; }
+					if (a == 33 && sigma2) { display_text(a), a++; }
+					if (a == 42 && sigma2) { display_text(a), a++; }
+					if (a == 46 && sigma2) { display_text(a), a++; }
+					if (a == 55 && sigma2) { display_text(a), a++; }
+					if (a == 44 && sigma3) { display_text(a), a++; }
+					if (a == 53 && sigma3) { display_text(a), a++; }
+					if (a == 57 && sigma3) { display_text(a), a++; }
+					if (a == 66 && sigma3) { display_text(a), a++; }
 					break;
 				case SDLK_3:
 					if (a == 13) { rjson("strings/beginning2.gptext"), display_text(a), a++, goNext = true; }
@@ -226,44 +381,6 @@ int main(int argc, char** argv)
 				default:
 					break;
 				}
-			/*
-			case SDL_MOUSEBUTTONDOWN:
-			{
-				if (event.button.button == SDL_BUTTON_LEFT)
-				{
-					leftClick = true;
-				}
-				if (CheckButton1.CheckEvents(leftClick) && p == 13)
-				{
-					goNext = true;
-					std::cout << "LOL" << std::endl;
-					p++;
-				}
-
-				if (CheckButton2.CheckEvents(leftClick) && p == 13)
-				{
-					goNext = true;
-					std::cout << "LMAO" << std::endl;
-					p++;
-				}
-
-				if (CheckButton3.CheckEvents(leftClick) && p == 13)
-				{
-					goNext = true;
-					std::cout << "Poggers" << std::endl;
-					p++;
-				}
-
-				if (event.type == SDL_MOUSEBUTTONUP)
-				{
-					if (event.button.button == SDL_BUTTON_LEFT)
-					{
-						leftClick = false;
-					}
-				}
-				break;
-				}
-			*/
 			default:
 				break;
 			}
@@ -274,6 +391,7 @@ int main(int argc, char** argv)
 
 	}
 	Mix_FreeMusic(background);
+	Mix_FreeChunk(ded);
 	Mix_CloseAudio();
 	return 0;
 }

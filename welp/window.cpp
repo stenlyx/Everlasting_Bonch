@@ -4,6 +4,7 @@
 #include "json.h"
 #include <iostream>
 #include "text.h"
+#include "SDL_mixer.h"
 
 SDL_Renderer* Window::renderer = nullptr;
 
@@ -20,6 +21,7 @@ Window::~Window()
 	IMG_Quit();
 	TTF_Quit();
 	SDL_Quit();
+
 }
 
 bool Window::init()
